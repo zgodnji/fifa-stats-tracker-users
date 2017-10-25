@@ -1,3 +1,5 @@
+package com.zgodnji.fifastattracker;
+
 public class User {
 
     private String id;

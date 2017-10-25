@@ -1,3 +1,5 @@
+package com.zgodnji.fifastattracker;
+
 import java.util.ArrayList;
 import java.util.List;
 
