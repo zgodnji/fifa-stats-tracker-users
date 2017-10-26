@@ -2,4 +2,4 @@ language: java
 
 script:
   - mvn clean package
-  - java -jar /target/users-1.0.0.jar
+  - docker run -p 8081:8081 usersimage
