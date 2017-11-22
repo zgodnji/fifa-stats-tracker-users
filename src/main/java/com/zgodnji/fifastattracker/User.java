@@ -5,6 +5,14 @@ public class User {
     private String id;
     private String firstName;
     private String lastName;
+    private String[] games;
+
+    public User(String id, String firstName, String lastName, String[] games) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.games = games;
+    }
 
     public String getId() {
         return id;
@@ -29,4 +37,8 @@ public class User {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
+    public String[] getGames() {return games; }
+
+    public void setGames(String[] games) {this.games = games; }
 }

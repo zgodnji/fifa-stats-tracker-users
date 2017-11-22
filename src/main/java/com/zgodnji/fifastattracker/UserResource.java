@@ -13,29 +13,7 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-    @Inject
-    private UserProperties properties;
-
-    @GET
-    @Path("test")
-    public Response testResponse() {
-        String response =
-                "{" +
-                        "\"stringProperty\": \"%s\"," +
-                        "\"booleanProperty\": %b," +
-                        "\"integerProperty\": %d" +
-                        "}";
-
-        response = String.format(
-                response,
-                properties.getStringProperty(),
-                properties.getBooleanProperty(),
-                properties.getIntegerProperty());
-
-        return Response.ok(response).build();
-    }
-
-    @GET
+   @GET
     public Response getAllUsers() {
         List<User> users = Database.getUsers();
         return Response.ok(users).build();
@@ -62,4 +40,45 @@ public class UserResource {
         Database.deleteUser(userId);
         return Response.noContent().build();
     }
+
+    @GET
+    @Path("create")
+    public Response fillDatabse() {
+        Database.addUser(new User(
+                "1",
+                "Jakob",
+                "Kolencar",
+                new String[] {"1","3"}
+        ));
+        Database.addUser(new User(
+                "2",
+                "Andraz",
+                "Fifameister",
+                new String[] {"2"}
+        ));
+       return Response.noContent().build();
+    }
+
+    @Inject
+    private UserProperties properties;
+
+    @GET
+    @Path("config")
+    public Response getConfig() {
+        String response =
+                "{" +
+                        "\"stringProperty\": \"%s\"," +
+                        "\"booleanProperty\": %b," +
+                        "\"integerProperty\": %d" +
+                        "}";
+
+        response = String.format(
+                response,
+                properties.getStringProperty(),
+                properties.getBooleanProperty(),
+                properties.getIntegerProperty());
+
+        return Response.ok(response).build();
+    }
+
 }
