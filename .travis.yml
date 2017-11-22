@@ -1,6 +1,15 @@
+sudo: required
+
+services:
+  - docker
+
 language: java
+dist: trusty
 
 script:
-  - mvn clean package
-  - docker build -t "usersimage" .
-  - docker run -p 8081:8081 usersimage
+  - mvn clean package -U
+  - docker build -t ancina/users .
+
+after_success:
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push ancina/users

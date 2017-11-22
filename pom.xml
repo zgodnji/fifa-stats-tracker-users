@@ -17,6 +17,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kumuluz.version>2.4.1</kumuluz.version>
         <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
+        <kumuluzee-config.version>1.0.0</kumuluzee-config.version>
     </properties>
 
     <dependencyManagement>
@@ -45,6 +46,17 @@
         <dependency>
             <groupId>com.kumuluz.ee</groupId>
             <artifactId>kumuluzee-jax-rs-jersey</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee</groupId>
+            <artifactId>kumuluzee-cdi-weld</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee.config</groupId>
+            <artifactId>kumuluzee-config-consul</artifactId>
+            <version>${kumuluzee-config.version}</version>
         </dependency>
     </dependencies>
 

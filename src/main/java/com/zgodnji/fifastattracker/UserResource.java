@@ -1,5 +1,6 @@
 package com.zgodnji.fifastattracker;
 
+import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -10,6 +11,28 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 @Path("users")
 public class UserResource {
+
+    @Inject
+    private UserProperties properties;
+
+    @GET
+    @Path("test")
+    public Response testResponse() {
+        String response =
+                "{" +
+                        "\"stringProperty\": \"%s\"," +
+                        "\"booleanProperty\": %b," +
+                        "\"integerProperty\": %d" +
+                        "}";
+
+        response = String.format(
+                response,
+                properties.getStringProperty(),
+                properties.getBooleanProperty(),
+                properties.getIntegerProperty());
+
+        return Response.ok(response).build();
+    }
 
     @GET
     public Response getAllUsers() {
