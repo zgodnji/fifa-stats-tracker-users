@@ -18,6 +18,7 @@
         <kumuluz.version>2.4.1</kumuluz.version>
         <maven-dependency-plugin.version>2.10</maven-dependency-plugin.version>
         <kumuluzee-config.version>1.0.0</kumuluzee-config.version>
+
     </properties>
 
     <dependencyManagement>
@@ -58,6 +59,13 @@
             <artifactId>kumuluzee-config-consul</artifactId>
             <version>${kumuluzee-config.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.kumuluz.ee.discovery</groupId>
+            <artifactId>kumuluzee-discovery-etcd</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

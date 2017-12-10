@@ -1,8 +1,11 @@
 package com.zgodnji.fifastattracker;
 
+import com.kumuluz.ee.discovery.annotations.DiscoverService;
+
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -13,7 +16,22 @@ import java.util.List;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
 
-   @GET
+    // service discovery
+    @Inject
+    @DiscoverService(value="games-service", version = "1.0.x", environment = "dev")
+    private WebTarget target;
+
+
+    // just for testing
+    @GET
+    @Path("url")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response getUrl() {
+        return Response.ok(target.getUri().toString()).build();
+    }
+
+
+    @GET
     public Response getAllUsers() {
         List<User> users = Database.getUsers();
         return Response.ok(users).build();
@@ -23,9 +41,34 @@ public class UserResource {
     @Path("{userId}")
     public Response getUser(@PathParam("userId") String userId) {
         User user = Database.getUser(userId);
+
+        // get users games
+        //if (user != null) {
+        //    getUserGames(user.getGames());
+        //}
+
         return user != null
                 ? Response.ok(user).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    private Response getUserGames(String[] games) {
+        // get games objects from 'games' microservice
+
+        WebTarget service = target.path("v1/games");
+        Response response;
+
+        for (String game:games) {
+
+            try {
+                response = service.request().get();
+            } catch (ProcessingException e) {
+                return Response.status(408).build();
+            }
+
+        }
+
+        return Response.ok().build();
     }
 
     @POST
