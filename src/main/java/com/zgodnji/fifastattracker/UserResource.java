@@ -147,4 +147,19 @@ public class UserResource {
         return Response.ok(response).build();
     }
 
+    // Resource for Mejnik 1
+    @GET
+    @Path("info")
+    public Response mejnik01() {
+        String response = "    \"clani\": [\"ak6688\", \"mn3322\"],\n" +
+                "    \"opis_projekta\": \"Nas projekt implementira aplikacijo za sledenje rezultatov tekem v igrah serije FIFA.\",\n" +
+                "    \"mikrostoritve\": [\"http://35.189.96.118:8081/v1/orders\", \"http://35.197.209.159:8080/v1/customers/\"],\n" +
+                "    \"github\": [\"https://github.com/zgodnji/fifa-stats-tracker-users\", \"https://github.com/zgodnji/fifa-stats-tracker-games\"],\n" +
+                "    \"travis\": [\"https://travis-ci.org/zgodnji/fifa-stats-tracker-users\", \"https://travis-ci.org/zgodnji/fifa-stats-tracker-games\"],\n" +
+                "    \"dockerhub\": [\"https://hub.docker.com/r/jojo27/fifa-stats-tracker-users/\", \"https://hub.docker.com/r/jojo27/fifa-stats-tracker-games/\"]";
+
+
+        return Response.ok(response).build();
+    }
+
 }
