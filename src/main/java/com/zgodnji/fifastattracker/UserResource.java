@@ -158,7 +158,6 @@ public class UserResource {
                 "    \"travis\": [\"https://travis-ci.org/zgodnji/fifa-stats-tracker-users\", \"https://travis-ci.org/zgodnji/fifa-stats-tracker-games\"],\n" +
                 "    \"dockerhub\": [\"https://hub.docker.com/r/jojo27/fifa-stats-tracker-users/\", \"https://hub.docker.com/r/jojo27/fifa-stats-tracker-games/\"]}";
 
-
         return Response.ok(response).build();
     }
 
