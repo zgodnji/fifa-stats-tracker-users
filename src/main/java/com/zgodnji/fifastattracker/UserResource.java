@@ -37,6 +37,52 @@ public class UserResource {
                 : Response.status(Response.Status.NOT_FOUND).build();
     }
 
+    @Inject
+    @DiscoverService(value = "games-service", environment = "dev", version = "1.0.0")
+    private String urlString;
+
+    @GET
+    @Path("{userId}/games")
+    public Response getGamesForUser(@PathParam("userId") String userId) {
+        // Get user
+        User user = Database.getUser(userId);
+        // Get game ids for user
+        String[] games = user.getGames();
+        // Initialize string builder
+        StringBuilder response = new StringBuilder();
+
+        response.append("[");
+        for (int i = 0; i < games.length; i++) {
+
+            try {
+                URL url = new URL(urlString + "/v1/games/" + games[i]);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("GET");
+                conn.setRequestProperty("Accept", "application/json");
+                if (conn.getResponseCode() != 200) {
+                    throw new RuntimeException("Failed : HTTP error code : "
+                            + conn.getResponseCode());
+                }
+                BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+                String output;
+                while ((output = br.readLine()) != null) {
+                    response.append(output);
+                }
+                conn.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            if(i + 1 < games.length) {
+                response.append(",");
+            }
+        }
+        response.append("]");
+
+        return Response.ok(String.format(String.valueOf(response))).build();
+    }
+
     @POST
     public Response addNewUser(User user) {
         Database.addUser(user);
@@ -96,15 +142,13 @@ public class UserResource {
 
     @Inject
     @DiscoverService(value = "games-service", environment = "dev", version = "1.0.0")
-    private String urlString;
-
-    @Inject
-    @DiscoverService(value = "games-service", environment = "dev", version = "1.0.0")
     private WebTarget webTarget;
 
     @GET
     @Path("games")
     public Response getGamesAllUsers() {
+        StringBuilder response = new StringBuilder();
+
         try {
             URL url = new URL(urlString + "/v1/games");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -116,9 +160,8 @@ public class UserResource {
             }
             BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
             String output;
-            System.out.println("Output from Server .... \n");
             while ((output = br.readLine()) != null) {
-                System.out.println(output);
+                response.append(output);
             }
             conn.disconnect();
         } catch (MalformedURLException e) {
@@ -126,7 +169,7 @@ public class UserResource {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return Response.noContent().build();
+        return Response.ok(String.format(String.valueOf(response))).build();
     }
 
     @GET
