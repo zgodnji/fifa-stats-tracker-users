@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: users
-        image: ancina/users:latest
+        image: jojo27/fifa-stats-tracker-users:latest
         ports:
         - containerPort: 8081
           name: server
