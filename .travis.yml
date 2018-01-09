@@ -8,8 +8,8 @@ dist: trusty
 
 script:
   - mvn clean package -U
-  - docker build -t jojo27/fifa-stats-tracker-users .
+  - docker build -t ancina/users .
 
 after_success:
-  - docker login -u="$DOCKER_USERNAME2" -p="$DOCKER_PASSWORD2"
-  - docker push jojo27/fifa-stats-tracker-users
+  - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
+  - docker push ancina/users
