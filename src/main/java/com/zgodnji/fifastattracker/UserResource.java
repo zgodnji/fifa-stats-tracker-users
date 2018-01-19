@@ -83,6 +83,44 @@ public class UserResource {
         return Response.ok(String.format(String.valueOf(response))).build();
     }
 
+
+    // get user's friends
+
+    @Inject
+    @DiscoverService(value = "user-friends-service", environment = "dev", version = "1.0.0")
+    private String urlStringFriends;
+
+    @GET
+    @Path("{userId}/friends")
+    public Response getFriendsForUser(@PathParam("userId") String userId) {
+
+        // Initialize string builder
+        StringBuilder response = new StringBuilder();
+
+        try {
+            URL url = new URL(urlStringFriends + "/v1/user-friends/" + userId);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Accept", "application/json");
+            if (conn.getResponseCode() != 200) {
+                throw new RuntimeException("Failed : HTTP error code : "
+                        + conn.getResponseCode());
+            }
+            BufferedReader br = new BufferedReader(new InputStreamReader((conn.getInputStream())));
+            String output;
+            while ((output = br.readLine()) != null) {
+                response.append(output);
+            }
+            conn.disconnect();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return Response.ok(String.format(String.valueOf(response))).build();
+    }
+
     @POST
     public Response addNewUser(User user) {
         Database.addUser(user);
